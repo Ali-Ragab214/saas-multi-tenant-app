@@ -8,15 +8,18 @@ import ali.ragab.saas_multi_tennant_app.repositories.CategoryRepository;
 import ali.ragab.saas_multi_tennant_app.requests.CategoryRequest;
 import ali.ragab.saas_multi_tennant_app.responses.CategoryResponse;
 import ali.ragab.saas_multi_tennant_app.services.CategoryService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
@@ -56,6 +59,14 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category with id " + id + " not found"));
         categoryRepository.delete(category);
     }
+
+    @Override
+    public List<CategoryResponse> findAll() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(categoryMapper::toResponse)
+                .toList();
+      }
 
 
     private  void checkIfCategoryExistByname(String name){

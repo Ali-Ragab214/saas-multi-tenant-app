@@ -1,5 +1,6 @@
 package ali.ragab.saas_multi_tennant_app.mappers;
 
+import ali.ragab.saas_multi_tennant_app.config.TenantContext;
 import ali.ragab.saas_multi_tennant_app.entities.Category;
 import ali.ragab.saas_multi_tennant_app.requests.CategoryRequest;
 import ali.ragab.saas_multi_tennant_app.responses.CategoryResponse;
@@ -12,7 +13,7 @@ public class CategoryMapper {
        return Category.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-               .tenantId("default-tenant-id")
+                .tenantId(TenantContext.getCurrentTenant())
                 .deleted(false)
                 .build();
     }
